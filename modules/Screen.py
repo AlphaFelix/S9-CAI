@@ -13,7 +13,6 @@ class Screen(Observer):
         self.current_note   = tk.StringVar()
         self.pure_note      = tk.IntVar()
         self.harmonic       = tk.IntVar()
-        self.chord          = tk.IntVar()
         
         self.notes          = ['C', 'C#', 'D', 'D#',
                                'E', 'F', 'F#', 'G',
@@ -157,18 +156,6 @@ class Screen(Observer):
             relief='flat'
         )
 
-        self.chord_cb = tk.Checkbutton(
-            self.gen_mode_frame,
-            text='Chord',
-            font='Arial 12',
-            variable=self.chord,
-            onvalue=1,
-            highlightbackground='#273746',
-            highlightcolor='#273746',
-            highlightthickness=1,
-            relief='flat'
-        )
-
     def show_all(self):
         self.gen_note_frame.place(relx=0.05, rely=0.05, width=300, height=300)
         self.gen_note_title.pack(fill='x')
@@ -182,7 +169,6 @@ class Screen(Observer):
         self.gen_mode_title.pack(fill='x')
         self.pure_note_cb.pack(fill='x')
         self.harmonic_cb.pack(fill='x')
-        self.chord_cb.pack(fill='x')
 
         self.save_button.place(relx=0.98, rely=0.98, relwidth=0.2, relheight=0.1, anchor='se')
 

@@ -1,7 +1,8 @@
 from modules.Observer import Subject
-import sqlite3
+import sqlite3, os
 import numpy as np
 from scipy.io.wavfile import write
+import matplotlib.pyplot as plt
 
 
 class Model(Subject):
@@ -9,7 +10,7 @@ class Model(Subject):
     def __init__(self):
         Subject.__init__(self)
 
-    def create_note(self, octa, note, duration=1):
+    def create_note(self, octa, note, is_pure_note, is_harmonic, duration=1):
         connect = sqlite3.connect("frequencies.db")
         cursor  = connect.cursor()
         freqs   = cursor.execute("SELECT * FROM frequencies")
@@ -25,11 +26,14 @@ class Model(Subject):
         fs          = 44100     # sampling rate, Hz, must be integer
         duration    = 1.0       # in seconds, may be float
 
-        left_audio  = (np.sin(2*np.pi*np.arange(fs*duration)*freq/fs)).astype(np.float32)
-        righ_audio  = (np.sin(2*np.pi*np.arange(fs*duration)*freq/fs)).astype(np.float32)
+        if(is_pure_note):
+            left_audio  = (np.sin(2*np.pi*np.arange(fs*duration)*freq/fs)).astype(np.float32)
+            righ_audio  = (np.sin(2*np.pi*np.arange(fs*duration)*freq/fs)).astype(np.float32)
+            audio       = np.stack((left_audio, righ_audio), axis=1)
 
-        audio = np.stack((left_audio, righ_audio), axis=1)
+            write(file_path, fs, audio)
 
-        write(file_path, fs, audio)
+        if(is_harmonic):
+            pass
 
         self.notify()
